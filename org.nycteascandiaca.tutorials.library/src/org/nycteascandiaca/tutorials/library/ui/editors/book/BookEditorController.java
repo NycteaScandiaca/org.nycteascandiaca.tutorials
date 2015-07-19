@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.ui.editors;
+package org.nycteascandiaca.tutorials.library.ui.editors.book;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -23,17 +23,21 @@ import org.nycteascandiaca.tutorials.library.model.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class BookEditorController implements IEditorController<Book, BookEditor>, IPropertyChangeListener, FocusListener, ItemListener
 {
 	private final BookEditor view;
-		
+	
+	private final BookAuthorsListModel authorsListModel;
+	
 	private final Book model;
 	
 	public BookEditorController(Book model, BookEditor view)
 	{
 		this.view = view;
 		this.model = model;
+		this.authorsListModel = new BookAuthorsListModel(model);
 	}
 	
 	@Override
@@ -58,6 +62,9 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		view.getPublicationDateTextField().addFocusListener(this);
 		view.getPagesTextField().addFocusListener(this);
 		view.getDescriptionTextArea().addFocusListener(this);
+		view.getAuthorsList().setModel(authorsListModel);
+		
+		authorsListModel.initialize();
 		
 		setViewId(model.getId());
 		setViewTitle(model.getTitle());

@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.ui.editors;
+package org.nycteascandiaca.tutorials.library.ui.editors.author;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -44,7 +44,7 @@ public class AuthorEditor extends JPanel
 	
 	private JList<Book> booksList;
 	
-	AuthorEditor()
+	public AuthorEditor()
 	{
 		initializeComponents();
 		
@@ -146,6 +146,7 @@ public class AuthorEditor extends JPanel
 		
 		booksLabel = new JLabel("Books:");
 		booksList = new JList<Book>();
+		booksList.setCellRenderer(new AuthorBooksListCellRenderer());
 	}
 	
 	public JTextField getIdTextField()

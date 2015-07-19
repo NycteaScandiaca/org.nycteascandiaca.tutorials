@@ -9,6 +9,10 @@ import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.ModelElement;
 import org.nycteascandiaca.tutorials.library.ui.EView;
 import org.nycteascandiaca.tutorials.library.ui.IView;
+import org.nycteascandiaca.tutorials.library.ui.editors.author.AuthorEditor;
+import org.nycteascandiaca.tutorials.library.ui.editors.author.AuthorEditorController;
+import org.nycteascandiaca.tutorials.library.ui.editors.book.BookEditor;
+import org.nycteascandiaca.tutorials.library.ui.editors.book.BookEditorController;
 
 @SuppressWarnings("serial")
 public class ElementEditor extends JPanel implements IView<ModelElement>

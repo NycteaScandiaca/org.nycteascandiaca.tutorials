@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.ui.editors;
+package org.nycteascandiaca.tutorials.library.ui.editors.author;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -18,17 +18,21 @@ import org.nycteascandiaca.tutorials.library.model.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class AuthorEditorController implements IEditorController<Author, AuthorEditor>, IPropertyChangeListener, FocusListener
 {
 	private final AuthorEditor view;
 	
+	private final AuthorBooksListModel booksListModel;
+	
 	private final Author model;
 
-	AuthorEditorController(Author model, AuthorEditor view)
+	public AuthorEditorController(Author model, AuthorEditor view)
 	{
 		this.model = model;
 		this.view = view;
+		this.booksListModel = new AuthorBooksListModel(model);
 	}
 	
 	@Override
@@ -51,6 +55,9 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 		view.getFirstNameTextField().addFocusListener(this);
 		view.getLastNameTextField().addFocusListener(this);
 		view.getDescriptionTextArea().addFocusListener(this);
+		view.getBooksList().setModel(booksListModel);
+		
+		booksListModel.initialize();
 		
 		setViewId(model.getId());
 		setViewFirstName(model.getFirstName());
@@ -62,7 +69,6 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 	@Override
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
 		
 	}
 	
