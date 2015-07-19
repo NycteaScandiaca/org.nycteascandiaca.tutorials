@@ -31,6 +31,7 @@ public class CommandStack
 			undoable.remove(0);
 		}
 		undoable.push(command);
+		redoable.clear();
 		
 		fireCommandStackChanged();
 	}

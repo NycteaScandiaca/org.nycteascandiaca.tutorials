@@ -2,16 +2,16 @@ package org.nycteascandiaca.tutorials.library.model.commands;
 
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
+import org.nycteascandiaca.tutorials.library.model.ModelElement;
 
 public class SetCommand implements ICommand
 {
-	private final IModelElement element;
+	private final ModelElement element;
 	private final EModelProperty property;
 	private final Object newValue;
 	private Object oldValue;
 	
-	public SetCommand(IModelElement element, EModelProperty property, Object newValue)
+	public SetCommand(ModelElement element, EModelProperty property, Object newValue)
 	{
 		this.element = element;
 		this.property = property;

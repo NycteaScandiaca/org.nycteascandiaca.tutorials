@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.model.impl;
+package org.nycteascandiaca.tutorials.library.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,10 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
-
-public class ModelList<T extends IModelElement> implements List<T>
+public class ModelList<T extends ModelElement> implements List<T>
 {
 	private final ModelElement source;
 	

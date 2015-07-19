@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 
 public class ResourceManager
 {
+	private static final String ICONS_ROOT = "icons/";
+	
 	public ResourceManager()
 	{
 		
@@ -14,7 +16,7 @@ public class ResourceManager
 	
 	public Icon getIcon(EIcon icon)
 	{
-		URL resource = getClass().getResource(icon.getResource());
+		URL resource = getClass().getResource(ICONS_ROOT + icon.getResource());
 		if (resource == null)
 		{
 			return null;

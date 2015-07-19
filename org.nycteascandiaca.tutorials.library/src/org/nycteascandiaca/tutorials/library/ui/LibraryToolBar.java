@@ -35,6 +35,5 @@ public class LibraryToolBar extends JToolBar
 		
 		button = add(actionManager.getAction(EAction.REDO));
 		button.setIcon(resourceManager.getIcon(EIcon.REDO_32x32));
-		
 	}
 }

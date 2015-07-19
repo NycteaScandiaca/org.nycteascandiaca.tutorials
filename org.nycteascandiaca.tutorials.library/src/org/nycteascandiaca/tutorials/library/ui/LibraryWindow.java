@@ -23,22 +23,21 @@ public class LibraryWindow extends JFrame
 	private final LibraryMenuBar menuBar;
 	
 	private final LibraryToolBar toolBar;
-	
-	private final JSplitPane splitPane;
-	
+		
 	public LibraryWindow()
 	{
-		modelTreeView = new ModelTreeView();
-		elementEditor = new ElementEditor();
 		menuBar = new LibraryMenuBar();
 		toolBar = new LibraryToolBar();
+		
+		modelTreeView = new ModelTreeView();
+		elementEditor = new ElementEditor();
 		
 		setJMenuBar(menuBar);
 		
 		setLayout(new BorderLayout());
 		add(toolBar, BorderLayout.NORTH);
 		
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setLeftComponent(modelTreeView);
 		splitPane.setRightComponent(elementEditor);
 		add(splitPane, BorderLayout.CENTER);
@@ -53,8 +52,11 @@ public class LibraryWindow extends JFrame
 				action.actionPerformed(null);
 			}
 		});
+		
+		setSize(800, 600);
+		splitPane.setDividerLocation(250);
 	}
-	
+		
 	public ModelTreeView getModelTreeView()
 	{
 		return modelTreeView;
@@ -63,12 +65,5 @@ public class LibraryWindow extends JFrame
 	public ElementEditor getElementEditor()
 	{
 		return elementEditor;
-	}
-	
-	@Override
-	public void setVisible(boolean b)
-	{
-		super.setVisible(b);
-		splitPane.setDividerLocation(0.35);
 	}
 }

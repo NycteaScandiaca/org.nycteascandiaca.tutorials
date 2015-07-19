@@ -1,52 +1,43 @@
-package org.nycteascandiaca.tutorials.library.model.impl;
+package org.nycteascandiaca.tutorials.library.model;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.ILibrary;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
-
-public class Library extends ModelElement implements ILibrary
+public class Library extends ModelElement
 {
 	private String name;
 	
-	private final List<IBook> books;
+	private final List<Book> books;
 	
-	private final List<IAuthor> authors;
+	private final List<Author> authors;
 	
 	private final List<IPropertyChangeListener> propertyChangeListeners;
 
-	Library()
+	Library(String id)
 	{
-		this.books = new ModelList<IBook>(this, EModelProperty.LIBRARY__BOOKS, true);
-		this.authors = new ModelList<IAuthor>(this, EModelProperty.LIBRARY__AUTHORS, true);
+		super(id);
+		
+		this.books = new ModelList<Book>(this, EModelProperty.LIBRARY__BOOKS, true);
+		this.authors = new ModelList<Author>(this, EModelProperty.LIBRARY__AUTHORS, true);
 		this.propertyChangeListeners = new LinkedList<IPropertyChangeListener>();
 	}
 	
-	@Override
 	public String getName()
 	{
 		return name;
 	}
-
-	@Override
+	
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
-	@Override
-	public List<IBook> getBooks()
+	
+	public List<Book> getBooks()
 	{
 		return books;
 	}
-
-	@Override
-	public List<IAuthor> getAuthors()
+	
+	public List<Author> getAuthors()
 	{
 		return authors;
 	}
@@ -64,7 +55,7 @@ public class Library extends ModelElement implements ILibrary
 	}
 	
 	@Override
-	protected void firePropertyChanged(IPropertyChangeEvent event)
+	protected void firePropertyChanged(PropertyChangeEvent event)
 	{
 		propertyChangeListeners.forEach(current -> current.propertyChange(event));
 	}

@@ -1,65 +1,53 @@
-package org.nycteascandiaca.tutorials.library.model.impl;
+package org.nycteascandiaca.tutorials.library.model;
 
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.ILibrary;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
-
-public abstract class ModelElement implements IModelElement
+public abstract class ModelElement
 {
 	private String id;
 	
-	private IModelElement owner;
+	private ModelElement owner;
 	
-	ModelElement()
+	ModelElement(String id)
 	{
-		
+		this.id = id;
 	}
 	
-	@Override
 	public String getId()
 	{
 		return id;
 	}
-
-	@Override
+	
 	public void setId(String id)
 	{
 		firePropertyChanged(EModelProperty.MODEL_ELEMENT__ID, this.id, this.id = id);
 	}
 	
-	@Override
-	public IModelElement getOwner()
+	public ModelElement getOwner()
 	{
 		return owner;
 	}
-
-	@Override
-	public void setOwner(IModelElement owner)
+	
+	public void setOwner(ModelElement owner)
 	{
 		firePropertyChanged(EModelProperty.MODEL_ELEMENT__ID, this.owner, this.owner = owner);
 	}
 	
-	@Override
-	public ILibrary getRoot()
+	public Library getRoot()
 	{
-		IModelElement element = this;
+		ModelElement element = this;
 		do
 		{
-			if (element instanceof ILibrary)
+			if (element instanceof Library)
 			{
-				element = (ILibrary)element;
+				element = (Library)element;
 				break;
 			}
 			element = getOwner();
 		}
 		while(element != null);
 		
-		return (ILibrary)element;
+		return (Library)element;
 	}
 	
-	@Override
 	public void addPropertyChangeListener(IPropertyChangeListener listener)
 	{
 		Library library = (Library)getRoot();
@@ -69,7 +57,6 @@ public abstract class ModelElement implements IModelElement
 		}
 	}
 	
-	@Override
 	public void removePropertyChangeListener(IPropertyChangeListener listener)
 	{
 		Library library = (Library)getRoot();
@@ -79,7 +66,6 @@ public abstract class ModelElement implements IModelElement
 		}
 	}
 	
-	@Override
 	public Object getPropertyValue(EModelProperty property)
 	{
 		switch(property)
@@ -99,7 +85,6 @@ public abstract class ModelElement implements IModelElement
 		}
 	}
 	
-	@Override
 	public void setPropertyValue(EModelProperty property, Object value)
 	{
 		switch(property)
@@ -111,7 +96,7 @@ public abstract class ModelElement implements IModelElement
 			}
 			case MODEL_ELEMENT__OWNER:
 			{
-				setOwner((IModelElement)value);
+				setOwner((ModelElement)value);
 				break;
 			}
 			default:
@@ -126,7 +111,7 @@ public abstract class ModelElement implements IModelElement
 		firePropertyChanged(new PropertyChangeEvent(this, property, oldValue, newValue));
 	}
 	
-	protected void firePropertyChanged(IPropertyChangeEvent event)
+	protected void firePropertyChanged(PropertyChangeEvent event)
 	{
 		Library library = (Library)getRoot();
 		if (library != null)

@@ -16,8 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.nycteascandiaca.tutorials.library.Application;
+import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.EBookCategory;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
 
@@ -52,7 +52,7 @@ public class BookEditor extends JPanel
 	
 	private JLabel authorsLabel;
 	
-	private JList<IAuthor> authorsList;
+	private JList<Author> authorsList;
 	
 	BookEditor()
 	{
@@ -177,7 +177,7 @@ public class BookEditor extends JPanel
 		descriptionTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		authorsLabel = new JLabel("Authors:");
-		authorsList = new JList<IAuthor>();
+		authorsList = new JList<Author>();
 	}
 	
 	public JTextField getIdTextField()
@@ -210,7 +210,7 @@ public class BookEditor extends JPanel
 		return descriptionTextArea;
 	}
 	
-	public JList<IAuthor> getAuthorsList()
+	public JList<Author> getAuthorsList()
 	{
 		return authorsList;
 	}

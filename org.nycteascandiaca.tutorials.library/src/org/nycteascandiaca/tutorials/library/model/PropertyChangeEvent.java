@@ -1,9 +1,6 @@
-package org.nycteascandiaca.tutorials.library.model.impl;
+package org.nycteascandiaca.tutorials.library.model;
 
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
-
-class PropertyChangeEvent implements IPropertyChangeEvent
+public class PropertyChangeEvent
 {
 	private final ModelElement source;
 	
@@ -13,7 +10,7 @@ class PropertyChangeEvent implements IPropertyChangeEvent
 	
 	private final Object newValue;
 	
-	PropertyChangeEvent(ModelElement source, EModelProperty property, Object oldValue, Object newValue)
+	public PropertyChangeEvent(ModelElement source, EModelProperty property, Object oldValue, Object newValue)
 	{
 		this.source = source;
 		this.property = property;
@@ -21,25 +18,21 @@ class PropertyChangeEvent implements IPropertyChangeEvent
 		this.oldValue = oldValue;
 	}
 	
-	@Override
 	public ModelElement getSource()
 	{
 		return source;
 	}
-
-	@Override
+	
 	public EModelProperty getProperty()
 	{
 		return property;
 	}
-
-	@Override
+	
 	public Object getOldValue()
 	{
 		return oldValue;
 	}
 	
-	@Override
 	public Object getNewValue()
 	{
 		return newValue;

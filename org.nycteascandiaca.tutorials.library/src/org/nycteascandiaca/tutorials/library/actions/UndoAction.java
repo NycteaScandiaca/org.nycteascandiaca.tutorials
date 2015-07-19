@@ -9,7 +9,7 @@ import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommandStackListener;
 
 @SuppressWarnings("serial")
-public class UndoAction extends AbstractAction implements ICommandStackListener, IAction
+class UndoAction extends AbstractAction implements ICommandStackListener, IAction
 {
 	UndoAction()
 	{

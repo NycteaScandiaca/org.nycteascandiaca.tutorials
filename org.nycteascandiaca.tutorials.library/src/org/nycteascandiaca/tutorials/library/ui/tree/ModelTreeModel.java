@@ -10,12 +10,12 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.ILibrary;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
+import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.Library;
+import org.nycteascandiaca.tutorials.library.model.ModelElement;
+import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
 
 public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 {
@@ -31,11 +31,11 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 			FakeNode.BOOKS
 	));
 	
-	private final ILibrary library;
+	private final Library library;
 	
 	private final List<TreeModelListener> listeners;
 	
-	ModelTreeModel(ILibrary library)
+	ModelTreeModel(Library library)
 	{
 		this.library = library;
 		this.library.addPropertyChangeListener(this);
@@ -59,7 +59,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 		{
 			return library.getBooks().isEmpty();
 		}
-		else if (node instanceof ILibrary)
+		else if (node instanceof Library)
 		{
 			return LIBRARY_CHILDREN.isEmpty();
 		}
@@ -77,7 +77,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 		{
 			return library.getBooks().size();
 		}
-		else if (parent instanceof ILibrary)
+		else if (parent instanceof Library)
 		{
 			return LIBRARY_CHILDREN.size();
 		}
@@ -95,7 +95,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 		{
 			return library.getBooks().get(index);
 		}
-		else if (parent instanceof ILibrary)
+		else if (parent instanceof Library)
 		{
 			return LIBRARY_CHILDREN.get(index);
 		}
@@ -113,7 +113,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 		{
 			return library.getBooks().indexOf(child);
 		}
-		else if (parent instanceof ILibrary)
+		else if (parent instanceof Library)
 		{
 			return LIBRARY_CHILDREN.indexOf(child);
 		}
@@ -142,9 +142,9 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 	
 	@Override
 	@SuppressWarnings("incomplete-switch")
-	public void propertyChange(IPropertyChangeEvent event)
+	public void propertyChange(PropertyChangeEvent event)
 	{
-		IModelElement source = event.getSource();
+		ModelElement source = event.getSource();
 		switch(event.getProperty())
 		{
 			case LIBRARY__NAME:
@@ -184,7 +184,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 		library.removePropertyChangeListener(this);
 	}
 
-	public static TreePath createPath(ILibrary library, Object node)
+	public static TreePath createPath(Library library, Object node)
 	{
 		if (node == FakeNode.AUTHORS)
 		{
@@ -202,11 +202,11 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 					FakeNode.BOOKS
 			});
 		}
-		else if (node instanceof ILibrary)
+		else if (node instanceof Library)
 		{
 			return new TreePath(node);
 		}
-		else if (node instanceof IAuthor)
+		else if (node instanceof Author)
 		{
 			return new TreePath(new Object[]
 			{
@@ -215,7 +215,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 					node
 			});
 		}
-		else if (node instanceof IBook)
+		else if (node instanceof Book)
 		{
 			return new TreePath(new Object[]
 			{

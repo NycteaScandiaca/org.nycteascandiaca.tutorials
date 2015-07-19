@@ -1,38 +1,57 @@
 package org.nycteascandiaca.tutorials.library.actions;
 
 import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
+import java.nio.file.Path;
 
 import org.nycteascandiaca.tutorials.library.Application;
-import org.nycteascandiaca.tutorials.library.ModelManager;
+import org.nycteascandiaca.tutorials.library.model.IModelManagerListener;
+import org.nycteascandiaca.tutorials.library.model.Library;
+import org.nycteascandiaca.tutorials.library.model.ModelManager;
 
 @SuppressWarnings("serial")
-public class CloseModelAction extends AbstractAction implements IAction
+class CloseModelAction extends AbstractAction implements IAction, IModelManagerListener
 {
 	CloseModelAction()
 	{
-		
+		setEnabled(false);
+	}
+	
+	@Override
+	public void initialize()
+	{
+		ModelManager modelManager = Application.INSTANCE.getModelManager();
+		modelManager.addModelManagerListener(this);
+	}
+	
+	@Override
+	public void dispose()
+	{
+		ModelManager modelManager = Application.INSTANCE.getModelManager();
+		modelManager.removeModelManagerListener(this);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		ModelManager modelManager = Application.INSTANCE.getModelManager();
-		modelManager.setLibrary(null);
+		modelManager.closeModel();
 	}
 
 	@Override
-	public void initialize()
+	public void modelOpened(Library library, Path path)
 	{
-		// TODO Auto-generated method stub
-		
+		setEnabled(true);
 	}
 
 	@Override
-	public void dispose()
+	public void modelSaved(Library library, Path path)
 	{
-		// TODO Auto-generated method stub
-		
+		// Do nothing
+	}
+
+	@Override
+	public void modelClosed(Library library)
+	{
+		setEnabled(false);
 	}
 }

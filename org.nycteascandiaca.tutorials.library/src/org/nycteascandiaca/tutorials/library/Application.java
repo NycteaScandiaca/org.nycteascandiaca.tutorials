@@ -1,13 +1,11 @@
 package org.nycteascandiaca.tutorials.library;
 
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.nycteascandiaca.tutorials.library.actions.ActionManager;
+import org.nycteascandiaca.tutorials.library.model.ModelManager;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
-import org.nycteascandiaca.tutorials.library.ui.EView;
-import org.nycteascandiaca.tutorials.library.ui.IView;
-import org.nycteascandiaca.tutorials.library.ui.LibraryWindow;
+import org.nycteascandiaca.tutorials.library.ui.UIManager;
 
 public final class Application
 {
@@ -17,18 +15,16 @@ public final class Application
 	
 	private final ActionManager actionManager;
 	
-	private final SelectionManager selectionManager;
+	private final UIManager uiManager;
 	
 	private final ResourceManager resourceManager;
-	
-	private LibraryWindow window;
 	
 	private Application()
 	{
 		modelManager = new ModelManager();
 		actionManager = new ActionManager();
-		selectionManager = new SelectionManager();
 		resourceManager = new ResourceManager();
+		uiManager = new UIManager();
 	}
 	
 	public ModelManager getModelManager()
@@ -46,50 +42,30 @@ public final class Application
 		return resourceManager;
 	}
 	
-	public LibraryWindow getWindow()
+	public UIManager getUIManager()
 	{
-		return window;
-	}
-	
-	public IView<?> getView(EView view)
-	{
-		switch(view)
-		{
-			case MODEL_TREE:
-			{
-				return window.getModelTreeView();
-			}
-			case MODEL_ELEMENT_EDITOR:
-			{
-				return window.getElementEditor();
-			}
-		}
-		throw new IllegalArgumentException("Not supported view");
+		return uiManager;
 	}
 	
 	public void run()
-	{
-		window = new LibraryWindow();
-		window.setSize(800, 600);
-		
+	{		
 		actionManager.initialize();
-		selectionManager.initialize();	
+		uiManager.initialize();	
 		
-		INSTANCE.window.setVisible(true);
+		uiManager.getWindow().setVisible(true);
 	}
 	
 	public void exit()
-	{
-		window.setVisible(false);
-		window.dispose();
+	{	
+		uiManager.getWindow().setVisible(false);
+		uiManager.getWindow().dispose();
 		System.exit(0);
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
-	{
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	{		
+		javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
 		
-		INSTANCE.run();
-		
+		INSTANCE.run();	
 	}
 }

@@ -4,21 +4,21 @@ import java.util.List;
 
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
+import org.nycteascandiaca.tutorials.library.model.ModelElement;
 
 public class AddCommand implements ICommand
 {
-	private final IModelElement container;
+	private final ModelElement container;
 	private final EModelProperty property;
-	private final IModelElement element;
+	private final ModelElement element;
 	private int index;
 	
-	public AddCommand(IModelElement container, EModelProperty property, IModelElement element)
+	public AddCommand(ModelElement container, EModelProperty property, ModelElement element)
 	{
 		this(container, property, element, -1);
 	}
 	
-	public AddCommand(IModelElement container, EModelProperty property, IModelElement element, int index)
+	public AddCommand(ModelElement container, EModelProperty property, ModelElement element, int index)
 	{
 		this.container = container;
 		this.property = property;

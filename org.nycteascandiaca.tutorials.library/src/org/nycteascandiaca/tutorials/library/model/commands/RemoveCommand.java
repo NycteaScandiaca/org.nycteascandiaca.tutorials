@@ -4,22 +4,22 @@ import java.util.List;
 
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
+import org.nycteascandiaca.tutorials.library.model.ModelElement;
 
 public class RemoveCommand implements ICommand
 {
-	private final IModelElement container;
+	private final ModelElement container;
 	private final EModelProperty property;
-	private IModelElement element;
+	private ModelElement element;
 	private int index;
 
-	public RemoveCommand(IModelElement container, EModelProperty property, IModelElement element)
+	public RemoveCommand(ModelElement container, EModelProperty property, ModelElement element)
 	{
 		this(container, property, -1);
 		this.element = element;
 	}
 	
-	public RemoveCommand(IModelElement container, EModelProperty property, int index)
+	public RemoveCommand(ModelElement container, EModelProperty property, int index)
 	{
 		this.container = container;
 		this.property = property;
@@ -36,7 +36,7 @@ public class RemoveCommand implements ICommand
 		}
 		else if (element == null)
 		{
-			element = (IModelElement)list.get(index);
+			element = (ModelElement)list.get(index);
 		}
 		redo();
 	}

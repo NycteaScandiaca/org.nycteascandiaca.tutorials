@@ -6,9 +6,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.nycteascandiaca.tutorials.library.Application;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.ILibrary;
+import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Book;
+import org.nycteascandiaca.tutorials.library.model.Library;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
 
@@ -37,26 +37,25 @@ public class ModelTreeCellRenderer extends DefaultTreeCellRenderer
 			this.setText("Books");
 			this.setIcon(resourceManager.getIcon(EIcon.BOOKS_16x16));
 		}
-		else if (value instanceof ILibrary)
+		else if (value instanceof Library)
 		{
-			ILibrary library = (ILibrary)value;
+			Library library = (Library)value;
 			this.setIcon(resourceManager.getIcon(EIcon.LIBRARY_16x16));
 			this.setText(library.getName());
 		}
-		else if (value instanceof IAuthor)
+		else if (value instanceof Author)
 		{
-			IAuthor author = (IAuthor)value;
+			Author author = (Author)value;
 			this.setIcon(resourceManager.getIcon(EIcon.AUTHOR_16x16));
 			this.setText(author.getFirstName() + " " + author.getLastName());
 		}
-		else if (value instanceof IBook)
+		else if (value instanceof Book)
 		{
-			IBook book = (IBook)value;
+			Book book = (Book)value;
 			this.setIcon(resourceManager.getIcon(EIcon.BOOK_16x16));
 			this.setText(book.getTitle());
 		}
 		
 		return this;
 	}
-
 }

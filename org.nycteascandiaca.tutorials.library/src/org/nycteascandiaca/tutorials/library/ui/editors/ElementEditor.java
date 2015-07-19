@@ -4,19 +4,18 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
+import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Book;
+import org.nycteascandiaca.tutorials.library.model.ModelElement;
 import org.nycteascandiaca.tutorials.library.ui.EView;
-import org.nycteascandiaca.tutorials.library.ui.IController;
 import org.nycteascandiaca.tutorials.library.ui.IView;
 
 @SuppressWarnings("serial")
-public class ElementEditor extends JPanel implements IView<IModelElement>
+public class ElementEditor extends JPanel implements IView<ModelElement>
 {
-	private IModelElement input;
+	private ModelElement input;
 	
-	private IController controller;
+	private IEditorController<?, ?> controller;
 		
 	public ElementEditor()
 	{
@@ -30,13 +29,13 @@ public class ElementEditor extends JPanel implements IView<IModelElement>
 	}
 
 	@Override
-	public IModelElement getInput()
+	public ModelElement getInput()
 	{
 		return input;
 	}
 
 	@Override
-	public void setInput(IModelElement input)
+	public void setInput(ModelElement input)
 	{
 		if (controller != null)
 		{
@@ -47,15 +46,15 @@ public class ElementEditor extends JPanel implements IView<IModelElement>
 		
 		this.input = input;
 		
-		if (input instanceof IBook)
+		if (input instanceof Book)
 		{
-			controller = new BookEditorController((IBook)input, new BookEditor());
+			controller = new BookEditorController((Book)input, new BookEditor());
 			controller.initialize();
 			add(controller.getView(), BorderLayout.CENTER);
 		}
-		else if (input instanceof IAuthor)
+		else if (input instanceof Author)
 		{
-			controller = new AuthorEditorController((IAuthor)input, new AuthorEditor());
+			controller = new AuthorEditorController((Author)input, new AuthorEditor());
 			controller.initialize();
 			add(controller.getView(), BorderLayout.CENTER);
 		}

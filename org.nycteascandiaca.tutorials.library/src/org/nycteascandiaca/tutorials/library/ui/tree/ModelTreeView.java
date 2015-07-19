@@ -16,7 +16,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.nycteascandiaca.tutorials.library.Application;
-import org.nycteascandiaca.tutorials.library.model.ILibrary;
+import org.nycteascandiaca.tutorials.library.model.Library;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
 import org.nycteascandiaca.tutorials.library.ui.EView;
@@ -27,15 +27,15 @@ import org.nycteascandiaca.tutorials.library.ui.Selection;
 import org.nycteascandiaca.tutorials.library.ui.SelectionChangeEvent;
 
 @SuppressWarnings("serial")
-public class ModelTreeView extends JPanel implements IView<ILibrary>, ISelectionProvider, TreeSelectionListener
+public class ModelTreeView extends JPanel implements IView<Library>, ISelectionProvider, TreeSelectionListener
 {
-	private JLabel headerLabel;
+	private final JLabel headerLabel;
 	
-	private JTree tree;
+	private final JTree tree;
 	
 	private ModelTreeModel treeModel;
 	
-	private ILibrary input;
+	private Library input;
 	
 	private Selection selection;
 	
@@ -43,27 +43,23 @@ public class ModelTreeView extends JPanel implements IView<ILibrary>, ISelection
 	
 	public ModelTreeView()
 	{
-		selection = Selection.EMPTY;
-		initializeComponents();
-		
+		tree = new JTree();
+		headerLabel = new JLabel(" Model Tree");
 		setLayout(new BorderLayout());
 		add(headerLabel, BorderLayout.NORTH);
 		add(new JScrollPane(tree), BorderLayout.CENTER);
 		
+		selection = Selection.EMPTY;
 		listeners = new LinkedList<ISelectionChangedListener>();
-	}
-	
-	private void initializeComponents()
-	{
+		
 		ResourceManager resourceManager = Application.INSTANCE.getResourceManager();
 		
-		headerLabel = new JLabel(" Model Tree");
 		headerLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		headerLabel.setOpaque(true);
 		headerLabel.setBackground(Color.LIGHT_GRAY);
 		headerLabel.setIcon(resourceManager.getIcon(EIcon.LIBRARY_48x48));
 		
-		tree = new JTree();
+		tree.setModel(null);
 		tree.setCellRenderer(new ModelTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 	}
@@ -75,13 +71,13 @@ public class ModelTreeView extends JPanel implements IView<ILibrary>, ISelection
 	}
 
 	@Override
-	public ILibrary getInput()
+	public Library getInput()
 	{
 		return input;
 	}
 
 	@Override
-	public void setInput(ILibrary input)
+	public void setInput(Library input)
 	{
 		if (treeModel != null)
 		{

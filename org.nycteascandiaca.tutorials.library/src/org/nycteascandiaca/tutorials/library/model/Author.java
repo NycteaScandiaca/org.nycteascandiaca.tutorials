@@ -1,12 +1,8 @@
-package org.nycteascandiaca.tutorials.library.model.impl;
+package org.nycteascandiaca.tutorials.library.model;
 
 import java.util.List;
 
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-
-public class Author extends ModelElement implements IAuthor
+public class Author extends ModelElement
 {
 	private String firstName;
 	
@@ -14,51 +10,46 @@ public class Author extends ModelElement implements IAuthor
 	
 	private String description;
 	
-	private final List<IBook> books;
+	private final List<Book> books;
 	
-	Author()
+	Author(String id)
 	{
-		books = new ModelList<IBook>(this, EModelProperty.AUTHOR__BOOKS, false);
+		super(id);
+		
+		books = new ModelList<Book>(this, EModelProperty.AUTHOR__BOOKS, false);
 	}
 	
-	@Override
 	public String getFirstName()
 	{
 		return firstName;
 	}
-
-	@Override
+	
 	public void setFirstName(String firstName)
 	{
 		firePropertyChanged(EModelProperty.AUTHOR__FIRST_NAME, this.firstName, this.firstName = firstName);
 	}
-
-	@Override
+	
 	public String getLastName()
 	{
 		return lastName;
 	}
-
-	@Override
+	
 	public void setLastName(String lastName)
 	{
 		firePropertyChanged(EModelProperty.AUTHOR__LAST_NAME, this.lastName, this.lastName = lastName);
 	}
-
-	@Override
+	
 	public String getDescription()
 	{
 		return description;
 	}
-
-	@Override
+	
 	public void setDescription(String description)
 	{
 		firePropertyChanged(EModelProperty.AUTHOR__DESCRIPTION, this.description, this.description = description);
 	}
-
-	@Override
-	public List<IBook> getBooks()
+	
+	public List<Book> getBooks()
 	{
 		return books;
 	}

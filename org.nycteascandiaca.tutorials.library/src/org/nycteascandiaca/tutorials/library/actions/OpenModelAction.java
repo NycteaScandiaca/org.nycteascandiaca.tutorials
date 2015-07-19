@@ -1,11 +1,14 @@
 package org.nycteascandiaca.tutorials.library.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
-import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+
+import org.nycteascandiaca.tutorials.library.Application;
 
 @SuppressWarnings("serial")
-public class OpenModelAction extends AbstractAction implements IAction
+class OpenModelAction extends AbstractAction implements IAction
 {
 
 	OpenModelAction()
@@ -16,21 +19,14 @@ public class OpenModelAction extends AbstractAction implements IAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		// TODO Auto-generated method stub
+		JFileChooser fileChooser = new JFileChooser();
+		int result = fileChooser.showOpenDialog(Application.INSTANCE.getUIManager().getWindow());
+		if (result != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
 		
-	}
-
-	@Override
-	public void initialize()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose()
-	{
-		// TODO Auto-generated method stub
-		
+		File file = fileChooser.getSelectedFile();
+		Application.INSTANCE.getModelManager().openModel(file.toPath());
 	}
 }

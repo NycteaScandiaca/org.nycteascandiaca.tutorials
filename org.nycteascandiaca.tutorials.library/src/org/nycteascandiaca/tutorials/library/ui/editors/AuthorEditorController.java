@@ -1,6 +1,5 @@
 package org.nycteascandiaca.tutorials.library.ui.editors;
 
-import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
@@ -13,35 +12,33 @@ import javax.swing.JTextField;
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
+import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.IModelElement;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
-import org.nycteascandiaca.tutorials.library.ui.IController;
 
-public class AuthorEditorController implements IController, IPropertyChangeListener, FocusListener
+public class AuthorEditorController implements IEditorController<Author, AuthorEditor>, IPropertyChangeListener, FocusListener
 {
 	private final AuthorEditor view;
 	
-	private final IAuthor model;
+	private final Author model;
 
-	AuthorEditorController(IAuthor model, AuthorEditor view)
+	AuthorEditorController(Author model, AuthorEditor view)
 	{
 		this.model = model;
 		this.view = view;
 	}
 	
 	@Override
-	public Component getView()
+	public AuthorEditor getView()
 	{
 		return view;
 	}
 
 	@Override
-	public IModelElement getModel()
+	public Author getModel()
 	{
 		return model;
 	}
@@ -71,7 +68,7 @@ public class AuthorEditorController implements IController, IPropertyChangeListe
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public void propertyChange(IPropertyChangeEvent event)
+	public void propertyChange(PropertyChangeEvent event)
 	{
 		if (event.getSource() != model)
 		{
@@ -102,7 +99,7 @@ public class AuthorEditorController implements IController, IPropertyChangeListe
 			}
 			case AUTHOR__BOOKS:
 			{
-				setViewBooks((List<IBook>)event.getNewValue());
+				setViewBooks((List<Book>)event.getNewValue());
 				break;
 			}
 			default:
@@ -137,17 +134,17 @@ public class AuthorEditorController implements IController, IPropertyChangeListe
 		descriptionTextArea.setText(String.valueOf(description));
 	}
 	
-	private void setViewBooks(List<IBook> newValue)
+	private void setViewBooks(List<Book> newValue)
 	{	
-		List<IBook> bookList = (List<IBook>)newValue;
-		IBook[] listData = null;
+		List<Book> bookList = (List<Book>)newValue;
+		Book[] listData = null;
 		if (bookList != null)
 		{
-			listData = new IBook[bookList.size()];
+			listData = new Book[bookList.size()];
 			listData = bookList.toArray(listData);
 		}
 		
-		JList<IBook> authorsList = view.getBooksList();
+		JList<Book> authorsList = view.getBooksList();
 		authorsList.setListData(listData);
 	}
 	
@@ -187,7 +184,7 @@ public class AuthorEditorController implements IController, IPropertyChangeListe
 			String description = descriptionTextArea.getText();
 			if (!Objects.equals(model.getDescription(), description))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.BOOK__DESCRIPTION, description);
+				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__DESCRIPTION, description);
 				commandStack.execute(command);
 			}
 		}

@@ -16,33 +16,33 @@ import javax.swing.JTextField;
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
+import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.EBookCategory;
 import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IAuthor;
-import org.nycteascandiaca.tutorials.library.model.IBook;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
-import org.nycteascandiaca.tutorials.library.ui.IController;
 
-public class BookEditorController implements IController, IPropertyChangeListener, FocusListener, ItemListener
+public class BookEditorController implements IEditorController<Book, BookEditor>, IPropertyChangeListener, FocusListener, ItemListener
 {
 	private final BookEditor view;
 		
-	private final IBook model;
+	private final Book model;
 	
-	public BookEditorController(IBook model, BookEditor view)
+	public BookEditorController(Book model, BookEditor view)
 	{
 		this.view = view;
 		this.model = model;
 	}
 	
 	@Override
-	public IBook getModel()
+	public Book getModel()
 	{
 		return model;
 	}
 	
+	@Override
 	public BookEditor getView()
 	{
 		return view;
@@ -79,7 +79,7 @@ public class BookEditorController implements IController, IPropertyChangeListene
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void propertyChange(IPropertyChangeEvent event)
+	public void propertyChange(PropertyChangeEvent event)
 	{
 		if (event.getSource() != model)
 		{
@@ -120,7 +120,7 @@ public class BookEditorController implements IController, IPropertyChangeListene
 			}
 			case BOOK__AUTHORS:
 			{
-				setViewAuthors((List<IAuthor>)event.getNewValue());
+				setViewAuthors((List<Author>)event.getNewValue());
 				break;
 			}
 			default:
@@ -167,17 +167,17 @@ public class BookEditorController implements IController, IPropertyChangeListene
 		descriptionTextArea.setText(String.valueOf(description));
 	}
 	
-	private void setViewAuthors(List<IAuthor> newValue)
+	private void setViewAuthors(List<Author> newValue)
 	{	
-		List<IAuthor> authorList = (List<IAuthor>)newValue;
-		IAuthor[] listData = null;
+		List<Author> authorList = (List<Author>)newValue;
+		Author[] listData = null;
 		if (authorList != null)
 		{
-			listData = new IAuthor[authorList.size()];
+			listData = new Author[authorList.size()];
 			listData = authorList.toArray(listData);
 		}
 		
-		JList<IAuthor> authorsList = view.getAuthorsList();
+		JList<Author> authorsList = view.getAuthorsList();
 		authorsList.setListData(listData);
 	}
 	
