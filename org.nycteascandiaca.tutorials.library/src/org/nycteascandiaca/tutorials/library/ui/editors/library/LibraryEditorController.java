@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.ui.editors.author;
+package org.nycteascandiaca.tutorials.library.ui.editors.library;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -10,36 +10,33 @@ import javax.swing.JTextField;
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
-import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.Library;
 import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.edit.commands.SetCommand;
 import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
-public class AuthorEditorController implements IEditorController<Author, AuthorEditor>, IPropertyChangeListener, FocusListener
+public class LibraryEditorController implements IEditorController<Library, LibraryEditor>, IPropertyChangeListener, FocusListener
 {
-	private final AuthorEditor view;
+	private final Library model;
 	
-	private final AuthorBooksListModel booksListModel;
+	private final LibraryEditor view;
 	
-	private final Author model;
-
-	public AuthorEditorController(Author model, AuthorEditor view)
+	public LibraryEditorController(Library model, LibraryEditor view)
 	{
 		this.model = model;
 		this.view = view;
-		this.booksListModel = new AuthorBooksListModel(model);
 	}
-	
+
 	@Override
-	public AuthorEditor getView()
+	public LibraryEditor getView()
 	{
 		return view;
 	}
 
 	@Override
-	public Author getModel()
+	public Library getModel()
 	{
 		return model;
 	}
@@ -49,18 +46,12 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 	{
 		model.addPropertyChangeListener(this);
 		
-		view.getFirstNameTextField().addFocusListener(this);
-		view.getLastNameTextField().addFocusListener(this);
+		view.getNameTextField().addFocusListener(this);
 		view.getDescriptionTextArea().addFocusListener(this);
-		view.getBooksList().setModel(booksListModel);
-		
-		booksListModel.initialize();
 		
 		setViewId(model.getId());
-		setViewFirstName(model.getFirstName());
-		setViewLastName(model.getLastName());
+		setViewName(model.getName());
 		setViewDescription(model.getDescription());
-		//setViewBooks(model.getBooks());
 	}
 
 	@Override
@@ -68,11 +59,8 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 	{
 		model.removePropertyChangeListener(this);
 		
-		view.getFirstNameTextField().removeFocusListener(this);
-		view.getLastNameTextField().removeFocusListener(this);
+		view.getNameTextField().removeFocusListener(this);
 		view.getDescriptionTextArea().removeFocusListener(this);
-		
-		booksListModel.dispose();
 	}
 	
 	@Override
@@ -90,17 +78,12 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 				setViewId((String)event.getNewValue());
 				break;
 			}
-			case AUTHOR__FIRST_NAME:
+			case LIBRARY__NAME:
 			{
-				setViewFirstName((String)event.getNewValue());
+				setViewName((String)event.getNewValue());
 				break;
 			}
-			case AUTHOR__LAST_NAME:
-			{
-				setViewLastName((String)event.getNewValue());
-				break;
-			}
-			case AUTHOR__DESCRIPTION:
+			case LIBRARY__DESCRIPTION:
 			{
 				setViewDescription((String)event.getNewValue());
 				break;
@@ -119,16 +102,10 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 		idTextField.setText(id);
 	}
 	
-	private void setViewFirstName(String firstName)
+	private void setViewName(String firstName)
 	{
-		JTextField firstNameTextField = view.getFirstNameTextField();
-		firstNameTextField.setText(firstName);
-	}
-	
-	private void setViewLastName(String lastName)
-	{
-		JTextField lastNameTextField = view.getLastNameTextField();
-		lastNameTextField.setText(lastName);
+		JTextField nameTextField = view.getNameTextField();
+		nameTextField.setText(firstName);
 	}
 	
 	private void setViewDescription(String description)
@@ -140,30 +117,21 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 	@Override
 	public void focusGained(FocusEvent e)
 	{
-		// Do nothing
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void focusLost(FocusEvent e)
 	{
 		CommandStack commandStack = Application.INSTANCE.getModelManager().getCommandStack();
-		if (e.getSource() == view.getFirstNameTextField())
+		if (e.getSource() == view.getNameTextField())
 		{
-			JTextField firstNameTextField = view.getFirstNameTextField();
-			String firstName = firstNameTextField.getText();
-			if (!Objects.equals(model.getFirstName(), firstName))
+			JTextField nameTextField = view.getNameTextField();
+			String firstName = nameTextField.getText();
+			if (!Objects.equals(model.getName(), firstName))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__FIRST_NAME, firstName);
-				commandStack.execute(command);
-			}
-		}
-		else if (e.getSource() == view.getLastNameTextField())
-		{
-			JTextField lastNameTextField = view.getLastNameTextField();
-			String lastName = lastNameTextField.getText();
-			if (!Objects.equals(model.getLastName(), lastName))
-			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__LAST_NAME, lastName);
+				ICommand command = new SetCommand(model, EModelProperty.LIBRARY__NAME, firstName);
 				commandStack.execute(command);
 			}
 		}
@@ -173,7 +141,7 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 			String description = descriptionTextArea.getText();
 			if (!Objects.equals(model.getDescription(), description))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__DESCRIPTION, description);
+				ICommand command = new SetCommand(model, EModelProperty.LIBRARY__DESCRIPTION, description);
 				commandStack.execute(command);
 			}
 		}

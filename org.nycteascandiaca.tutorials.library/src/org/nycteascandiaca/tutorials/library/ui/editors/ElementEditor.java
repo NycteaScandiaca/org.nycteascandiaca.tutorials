@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
+import org.nycteascandiaca.tutorials.library.model.Library;
 import org.nycteascandiaca.tutorials.library.model.ModelElement;
 import org.nycteascandiaca.tutorials.library.ui.EView;
 import org.nycteascandiaca.tutorials.library.ui.IView;
@@ -13,6 +14,8 @@ import org.nycteascandiaca.tutorials.library.ui.editors.author.AuthorEditor;
 import org.nycteascandiaca.tutorials.library.ui.editors.author.AuthorEditorController;
 import org.nycteascandiaca.tutorials.library.ui.editors.book.BookEditor;
 import org.nycteascandiaca.tutorials.library.ui.editors.book.BookEditorController;
+import org.nycteascandiaca.tutorials.library.ui.editors.library.LibraryEditor;
+import org.nycteascandiaca.tutorials.library.ui.editors.library.LibraryEditorController;
 
 @SuppressWarnings("serial")
 public class ElementEditor extends JPanel implements IView<ModelElement>
@@ -59,6 +62,12 @@ public class ElementEditor extends JPanel implements IView<ModelElement>
 		else if (input instanceof Author)
 		{
 			controller = new AuthorEditorController((Author)input, new AuthorEditor());
+			controller.initialize();
+			add(controller.getView(), BorderLayout.CENTER);
+		}
+		else if (input instanceof Library)
+		{
+			controller = new LibraryEditorController((Library)input, new LibraryEditor());
 			controller.initialize();
 			add(controller.getView(), BorderLayout.CENTER);
 		}

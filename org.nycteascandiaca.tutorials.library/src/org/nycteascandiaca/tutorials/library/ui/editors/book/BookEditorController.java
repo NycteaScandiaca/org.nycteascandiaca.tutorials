@@ -5,18 +5,15 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
-import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.EBookCategory;
 import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
@@ -72,7 +69,6 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		setViewPublicationDate(model.getPublicationDate());
 		setViewPages(model.getPages());
 		setViewDescription(model.getDescription());
-		setViewAuthors(model.getAuthors());
 	}
 	
 	@Override
@@ -81,7 +77,12 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		model.removePropertyChangeListener(this);
 		
 		view.getTitleTextField().removeFocusListener(this);
-		view.getCategoryComboBox().removeFocusListener(this);
+		view.getCategoryComboBox().removeItemListener(this);
+		view.getPublicationDateTextField().removeFocusListener(this);
+		view.getPagesTextField().removeFocusListener(this);
+		view.getDescriptionTextArea().removeFocusListener(this);
+		
+		authorsListModel.dispose();
 	}
 	
 	@Override
@@ -166,20 +167,6 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 	{
 		JTextArea descriptionTextArea = view.getDescriptionTextArea();
 		descriptionTextArea.setText(String.valueOf(description));
-	}
-	
-	private void setViewAuthors(List<Author> newValue)
-	{	
-		List<Author> authorList = (List<Author>)newValue;
-		Author[] listData = null;
-		if (authorList != null)
-		{
-			listData = new Author[authorList.size()];
-			listData = authorList.toArray(listData);
-		}
-		
-		JList<Author> authorsList = view.getAuthorsList();
-		authorsList.setListData(listData);
 	}
 	
 	@Override

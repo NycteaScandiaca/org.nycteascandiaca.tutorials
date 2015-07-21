@@ -1,13 +1,15 @@
 package org.nycteascandiaca.tutorials.library.model;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
-import org.nycteascandiaca.tutorials.library.Application;
+import javax.xml.bind.JAXBException;
+
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
+import org.nycteascandiaca.tutorials.library.model.utils.ModelXMLReader;
+import org.nycteascandiaca.tutorials.library.model.utils.ModelXMLWriter;
 
 public class ModelManager
 {
@@ -60,53 +62,52 @@ public class ModelManager
 	
 	public Library newModel()
 	{
-		commandStack.clear();
-		
-		//model = modelFactory.createLibrary();
-		//model.setName("New Library");
-		
-		model = createDemoModel();	
+		model = modelFactory.createLibrary();
+		model.setName("New Library");
 		path = null;
+		commandStack.clear();
 		
 		fireModelOpened(model, path);
 		
 		return model;
 	}
 	
-	public Library openModel(Path path)
+	public Library openModel(Path path) throws FileNotFoundException, JAXBException
 	{
+		model = ModelXMLReader.read(path);
+		this.path = path;
 		commandStack.clear();
-		
-		model = null;
-		path = null;
-		
-		// TODO ...
 		
 		fireModelOpened(model, path);
 		
 		return model;
 	}
 	
-	public void saveModel()
+	public void saveModel() throws JAXBException
 	{
 		if (model == null || path == null)
 		{
 			throw new IllegalStateException();
 		}
 		
-		// TODO ...
+		ModelXMLWriter.write(model, path);
 		
 		fireModelSaved(model, path);
 	}
 	
-	public void saveModelAs(Path path)
+	public void saveModelAs(Path path) throws JAXBException
 	{
+		if (path == null)
+		{
+			throw new IllegalArgumentException("Argument 'path' is null");
+		}		
 		if (model == null)
 		{
 			throw new IllegalStateException();
 		}
 		
-		// TODO ...
+		ModelXMLWriter.write(model, path);
+		this.path = path;
 		
 		fireModelSaved(model, path);
 	}
@@ -122,26 +123,6 @@ public class ModelManager
 		fireModelClosed(model);
 	}
 	
-	public Library openDemoModel()
-	{
-		commandStack.clear();
-		
-		model = createDemoModel();
-		path = null;
-		
-		fireModelOpened(model, path);
-		
-		return model;
-	}
-	
-	public void setModel(Library model)
-	{
-		commandStack.clear();
-		path = null;
-		
-		this.model = model;
-	}
-		
 	private void fireModelClosed(Library library)
 	{
 		listeners.forEach(current -> current.modelClosed(model));
@@ -155,34 +136,5 @@ public class ModelManager
 	private void fireModelSaved(Library model, Path path)
 	{
 		listeners.forEach(current -> current.modelSaved(model, path));
-	}
-	
-	private static Library createDemoModel()
-	{		
-		ModelFactory modelFactory = Application.INSTANCE.getModelManager().getModelFactory();
-		
-		Author author = modelFactory.createAuthor();
-		author.setId(UUID.randomUUID().toString());
-		author.setFirstName("Frank");
-		author.setLastName("Luna");
-		
-		Book book = modelFactory.createBook();
-		book.setId(UUID.randomUUID().toString());
-		book.setTitle("Introduction to 3D Game Programming with DirectX 12");
-		book.setCategory(EBookCategory.COMPUTER_SCIENCE);
-		book.setPublicationDate(LocalDate.of(2015, 12, 15));
-		book.setPages(900);
-		book.setDescription("This updated international bestseller provides an introduction to programming interactive computer graphics with an emphasis on game development using DirectX 12.\nThe book is divided into three main parts: basic mathematical tools, fundamental tasks in Direct3D, and techniques and special effects.\nIt shows how to use new DirectX12 features such as command lists, bundles, pipeline state objects, descriptor heaps and tables, and explicit resource management to reduce CPU overhead and increase scalability across multiple CPU cores.\nThe book covers modern special effects and techniques such as hardware tessellation, computer shaders, ambient occlusion, reflections, normal and displacement mapping, shadow rendering, particle systems, and character animation.\nIt includes a companion DVD with code and figures.");
-		
-		Library library = modelFactory.createLibrary();
-		library.setId(UUID.randomUUID().toString());
-		library.setName("Demo Library");
-		library.getBooks().add(book);
-		library.getAuthors().add(author);
-		
-		author.getBooks().add(book);
-		book.getAuthors().add(author);
-		
-		return library;
 	}
 }

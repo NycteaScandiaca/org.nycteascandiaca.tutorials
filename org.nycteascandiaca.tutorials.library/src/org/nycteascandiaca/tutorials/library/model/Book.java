@@ -3,22 +3,46 @@ package org.nycteascandiaca.tutorials.library.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
+import org.nycteascandiaca.tutorials.library.model.utils.LocalDateXMLAdapter;
 
+@XmlRootElement(name = "Book")
 public class Book extends ModelElement
 {
+	@XmlElement(name = "Title")
 	private String title;
 	
+	@XmlElement(name = "Description")
 	private String description;
 	
+	@XmlJavaTypeAdapter(LocalDateXMLAdapter.class)
+	@XmlElement(name = "PublicationDate")
 	private LocalDate publicationDate;
 	
+	@XmlElement(name="Category", required = true)
 	private EBookCategory category;
 	
+	@XmlElement(name = "pages")
 	private int pages;
 	
+	@XmlIDREF
+	@XmlElementWrapper(name="Authors")
+    @XmlElement(name="AuthorId")
 	private final List<Author> authors;
+	
+	Book()
+	{
+		super(null);
+		
+		authors = new ModelList<Author>(this, EModelProperty.BOOK__AUTHORS, false);
+	}
 	
 	Book(String id)
 	{

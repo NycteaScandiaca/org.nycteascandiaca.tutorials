@@ -59,6 +59,10 @@ public final class Application
 	{	
 		uiManager.getWindow().setVisible(false);
 		uiManager.getWindow().dispose();
+		
+		uiManager.initialize();	
+		actionManager.initialize();
+		
 		System.exit(0);
 	}
 	

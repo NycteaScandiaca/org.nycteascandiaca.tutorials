@@ -39,9 +39,7 @@ public enum EIcon
 	BOOK_48x48 ("Book48x48.png"),
 	
 	BOOKS_16x16 ("Books16x16.png"),
-	BOOKS_32x32 ("Books32x32.png"),
-	
-	;
+	BOOKS_32x32 ("Books32x32.png");
 	
 	private final String resource;
 	

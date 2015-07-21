@@ -151,6 +151,7 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 			case LIBRARY__NAME:
 			case AUTHOR__FIRST_NAME:
 			case AUTHOR__LAST_NAME:
+			case BOOK__TITLE:
 			{
 				TreePath path = createPath(library, source);
 				fireTreeNodesChanged(path);

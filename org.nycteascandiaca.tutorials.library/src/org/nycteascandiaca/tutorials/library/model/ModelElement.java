@@ -1,14 +1,26 @@
 package org.nycteascandiaca.tutorials.library.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+
 import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
 import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ModelElement
 {
+    @XmlID
+    @XmlAttribute(name = "Id")
 	private String id;
 	
+    @XmlIDREF
+    @XmlElement(name = "Owner")
 	private ModelElement owner;
 	
 	ModelElement(String id)
@@ -130,6 +142,11 @@ public abstract class ModelElement
 	
 	protected void firePropertyChanged(PropertyChangeEvent event)
 	{
+		if (event.getOldValue() == event.getNewValue())
+		{
+			return;
+		}
+		
 		Library library = (Library)getRoot();
 		if (library != null)
 		{

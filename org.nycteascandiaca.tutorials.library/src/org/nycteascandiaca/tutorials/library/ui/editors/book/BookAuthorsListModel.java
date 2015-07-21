@@ -9,7 +9,6 @@ import javax.swing.event.ListDataListener;
 
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
-import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 
@@ -59,9 +58,9 @@ public class BookAuthorsListModel implements ListModel<Author>, IPropertyChangeL
 		listeners.remove(listener);
 	}
 	
-	private void fireContentsChanged()
+	private void fireContentsChanged(int index0, int index1)
 	{
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0);
+		ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, index0, index1);
 		listeners.forEach(current -> current.contentsChanged(event));
 	}
 	
@@ -76,39 +75,61 @@ public class BookAuthorsListModel implements ListModel<Author>, IPropertyChangeL
 		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index0, index1);
 		listeners.forEach(current -> current.intervalAdded(event));
 	}
-
+	
 	@Override
+	@SuppressWarnings("incomplete-switch")
 	public void propertyChange(PropertyChangeEvent event)
-	{
-		if (event.getSource() != book)
+	{		
+		switch(event.getProperty())
 		{
-			return;
-		}
-		
-		if (event.getProperty() == EModelProperty.BOOK__AUTHORS)
-		{
-			switch (event.getEventType())
+			case AUTHOR__FIRST_NAME:
+			case AUTHOR__LAST_NAME:
+			case AUTHOR__BOOKS:
 			{
-				case ADD:
+				int index = book.getAuthors().indexOf(event.getSource());
+				if (index >= 0)
 				{
-					int index = event.getIndices()[0];
-					fireIntervalAdded(index, index);
-					break;
+					fireContentsChanged(index, index);
 				}
-				case ADD_MANY:
+				break;
+			}
+			case BOOK__AUTHORS:
+			{
+				if (event.getSource() == book)
 				{
-					
+					switch (event.getEventType())
+					{
+						case ADD:
+						{
+							int index = event.getIndices()[0];
+							fireIntervalAdded(index, index);
+							break;
+						}
+						case ADD_MANY:
+						{
+							// TODO Improve me
+							for (int index : event.getIndices())
+							{
+								fireIntervalAdded(index, index);
+							}
+						}
+						case REMOVE:
+						{
+							int index = event.getIndices()[0];
+							fireIntervalRemoved(index, index);
+							break;
+						}
+						case REMOVE_MANY:
+						{
+							// TODO Improve me
+							for (int index : event.getIndices())
+							{
+								fireIntervalRemoved(index, index);
+							}
+						}
+					}
 				}
-				case REMOVE:
-				{
-					int index = event.getIndices()[0];
-					fireIntervalRemoved(index, index);
-					break;
-				}
-				case REMOVE_MANY:
-				{
-					
-				}
+				break;
 			}
 		}
 	}

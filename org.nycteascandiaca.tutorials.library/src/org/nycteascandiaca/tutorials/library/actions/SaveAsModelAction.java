@@ -5,10 +5,13 @@ import java.io.File;
 import java.nio.file.Path;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBException;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.model.IModelManagerListener;
 import org.nycteascandiaca.tutorials.library.model.Library;
+import org.nycteascandiaca.tutorials.library.ui.LibraryWindow;
 
 @SuppressWarnings("serial")
 class SaveAsModelAction extends AbstractAction implements IAction, IModelManagerListener
@@ -20,17 +23,44 @@ class SaveAsModelAction extends AbstractAction implements IAction, IModelManager
 	}
 	
 	@Override
+	public void initialize()
+	{
+		Application.INSTANCE.getModelManager().addModelManagerListener(this);
+	}
+	
+	@Override
+	public void dispose()
+	{
+		Application.INSTANCE.getModelManager().removeModelManagerListener(this);
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		LibraryWindow window = Application.INSTANCE.getUIManager().getWindow();
+		
 		JFileChooser fileChooser = new JFileChooser();
-		int result = fileChooser.showSaveDialog(Application.INSTANCE.getUIManager().getWindow());
+		int result = fileChooser.showSaveDialog(window);
 		if (result != JFileChooser.APPROVE_OPTION)
 		{
 			return;
 		}
 		
 		File file = fileChooser.getSelectedFile();		
-		Application.INSTANCE.getModelManager().saveModelAs(file.toPath());
+		try
+		{
+			Application.INSTANCE.getModelManager().saveModelAs(file.toPath());
+		}
+		catch (JAXBException e1)
+		{
+			JOptionPane.showMessageDialog
+			(
+					window,
+					"Cannot save model: " + e1.getMessage(),
+					"Save Model",
+					JOptionPane.ERROR_MESSAGE
+			);
+		}
 	}
 
 	@Override
