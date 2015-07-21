@@ -14,10 +14,10 @@ import org.nycteascandiaca.tutorials.library.commands.CommandStack;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
-import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
-import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
+import org.nycteascandiaca.tutorials.library.model.edit.commands.SetCommand;
 import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class AuthorEditorController implements IEditorController<Author, AuthorEditor>, IPropertyChangeListener, FocusListener

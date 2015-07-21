@@ -3,6 +3,10 @@ package org.nycteascandiaca.tutorials.library.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
+
 public class Library extends ModelElement
 {
 	private String name;

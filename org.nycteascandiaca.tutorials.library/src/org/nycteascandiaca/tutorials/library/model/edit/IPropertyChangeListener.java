@@ -1,4 +1,4 @@
-package org.nycteascandiaca.tutorials.library.model;
+package org.nycteascandiaca.tutorials.library.model.edit;
 
 public interface IPropertyChangeListener
 {

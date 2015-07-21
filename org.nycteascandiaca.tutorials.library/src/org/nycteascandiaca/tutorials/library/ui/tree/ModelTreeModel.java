@@ -12,10 +12,11 @@ import javax.swing.tree.TreePath;
 
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.Library;
 import org.nycteascandiaca.tutorials.library.model.ModelElement;
-import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 
 public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 {
@@ -157,11 +158,41 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 			}
 			case LIBRARY__AUTHORS:
 			case LIBRARY__BOOKS:
-			case AUTHOR__BOOKS:
-			case BOOK__AUTHORS:
 			{
-				TreePath path = createPath(library, source);
-				fireTreeStructureChanged(path);
+				Object node;
+				if (event.getProperty() == EModelProperty.LIBRARY__AUTHORS)
+				{
+					node = FakeNode.AUTHORS;
+				}
+				else
+				{
+					node = FakeNode.BOOKS;
+				}
+				
+				TreePath path = createPath(library, node);
+				switch(event.getEventType())
+				{
+					case ADD:
+					{
+						fireTreeNodesInserted(path, event.getIndices(), new Object[] { event.getNewValue() });
+						break;
+					}
+					case ADD_MANY:
+					{
+						fireTreeNodesInserted(path, event.getIndices(), (Object[])event.getNewValue());
+						break;
+					}
+					case REMOVE:
+					{
+						fireTreeNodesRemoved(path, event.getIndices(), new Object[] { event.getOldValue() });
+						break;
+					}
+					case REMOVE_MANY:
+					{
+						fireTreeNodesRemoved(path, event.getIndices(), (Object[])event.getOldValue());
+						break;
+					}
+				}
 				break;
 			}
 		}
@@ -177,6 +208,18 @@ public class ModelTreeModel implements TreeModel, IPropertyChangeListener
 	{
 		TreeModelEvent event = new TreeModelEvent(this, path);
 		listeners.forEach(current -> current.treeStructureChanged(event));
+	}
+	
+	private void fireTreeNodesInserted(TreePath path, int[] indices, Object[] children)
+	{
+		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+		listeners.forEach(current -> current.treeNodesInserted(event));
+	}
+	
+	private void fireTreeNodesRemoved(TreePath path, int[] indices, Object[] children)
+	{
+		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+		listeners.forEach(current -> current.treeNodesRemoved(event));
 	}
 	
 	void dispose()

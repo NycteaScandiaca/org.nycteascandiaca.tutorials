@@ -1,33 +1,33 @@
 package org.nycteascandiaca.tutorials.library.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class ModelList<T extends ModelElement> implements List<T>
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
+
+class ModelList<T extends ModelElement> implements List<T>
 {
 	private final ModelElement source;
 	
 	private final EModelProperty property;
 	
-	private final List<T> list;
+	private final ArrayList<T> list;
 	
 	private final boolean container;
-	
+		
 	ModelList(ModelElement source, EModelProperty property, boolean container)
-	{
-		this(source, property, container, new ArrayList<T>());
-	}
-	
-	ModelList(ModelElement source, EModelProperty property, boolean container, List<T> list)
 	{
 		this.source = source;
 		this.property = property;
 		this.container = container;
-		this.list = list;
+		this.list = new ArrayList<T>();
 	}
 	
 	public Object getSource()
@@ -85,27 +85,52 @@ public class ModelList<T extends ModelElement> implements List<T>
 	@Override
 	public boolean add(T e)
 	{
-		boolean isChanged = list.add(e);
-		if (isChanged)
+		if (container)
 		{
-			if (container)
-			{
-				e.setOwner(source);
-			}
-			source.firePropertyChanged(property, null, null);
+			e.setOwner(source);
 		}
-		return isChanged;
+		
+		list.add(e);
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.ADD,
+				null,
+				e,
+				list.size() - 1
+		);
+		source.firePropertyChanged(event);
+		return true;
 	}
-
+	
 	@Override
 	public boolean remove(Object o)
 	{
-		boolean isChanged = list.remove(o);
-		if (isChanged)
+		int indexOf = list.indexOf(o);
+		if (indexOf < 0)
 		{
-			source.firePropertyChanged(property, null, null);
+			return false;
 		}
-		return isChanged;
+		
+		list.remove(indexOf);
+		
+		if (container)
+		{
+			((ModelElement)o).setOwner(null);
+		}
+		
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.REMOVE,
+				o,
+				null,
+				indexOf
+		);
+		source.firePropertyChanged(event);
+		return true;
 	}
 
 	@Override
@@ -117,14 +142,30 @@ public class ModelList<T extends ModelElement> implements List<T>
 	@Override
 	public boolean addAll(Collection<? extends T> c)
 	{
+		if (container)
+		{
+			c.forEach(current -> current.setOwner(source));
+		}
+		
 		boolean isChanged = list.addAll(c);
 		if (isChanged)
 		{
-			if (container)
+			int[] indices = new int[c.size()];
+			for (int i = 0; i < indices.length; i++)
 			{
-				c.forEach(current -> current.setOwner(source));
+				indices[i] = c.size() + i;
 			}
-			source.firePropertyChanged(property, null, null);
+			
+			PropertyChangeEvent event = new PropertyChangeEvent
+			(
+					source,
+					property,
+					EPropertyChangeEventType.ADD_MANY,
+					null,
+					c.toArray(),
+					indices
+			);
+			source.firePropertyChanged(event);
 		}
 		return isChanged;
 	}
@@ -132,14 +173,30 @@ public class ModelList<T extends ModelElement> implements List<T>
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c)
 	{
+		if (container)
+		{
+			c.forEach(current -> current.setOwner(source));
+		}
+		
 		boolean isChanged = list.addAll(index, c);
 		if (isChanged)
 		{
-			if (container)
+			int[] indices = new int[c.size()];
+			for (int i = 0; i < indices.length; i++)
 			{
-				c.forEach(current -> current.setOwner(source));
+				indices[i] = index + i;
 			}
-			source.firePropertyChanged(property, null, null);
+			
+			PropertyChangeEvent event = new PropertyChangeEvent
+			(
+					source,
+					property,
+					EPropertyChangeEventType.REMOVE,
+					null,
+					c.toArray(),
+					indices
+			);
+			source.firePropertyChanged(event);
 		}
 		return isChanged;
 	}
@@ -147,34 +204,88 @@ public class ModelList<T extends ModelElement> implements List<T>
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
-		boolean isChanged = list.removeAll(c);
-		if (isChanged)
+		int[] indices = new int[c.size()];
+		int length = 0;
+		for (Object current : c)
 		{
-			source.firePropertyChanged(property, null, null);
+			int index = list.indexOf(current);
+			if (index < 0)
+			{
+				continue;
+			}
+			
+			indices[length] = index;
+			length++;
+			T element = list.remove(index);
+			if (container)
+			{
+				element.setOwner(null);
+			}
 		}
-		return isChanged;
+		
+		if (length == 0)
+		{
+			return false;
+		}
+		
+		indices = Arrays.copyOfRange(indices, 0, length);
+		
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.REMOVE_MANY,
+				c.toArray(),
+				null,
+				indices
+		);
+		source.firePropertyChanged(event);
+		
+		return true;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
-		boolean isChanged = list.retainAll(c);
-		if (isChanged)
-		{
-			source.firePropertyChanged(property, null, null);
-		}
-		return isChanged;
+		throw new UnsupportedOperationException("]:>");
 	}
 
 	@Override
 	public void clear()
 	{
-		boolean isChanged = !list.isEmpty();
-		list.clear();
-		if (isChanged)
+		int size = list.size();
+		if (size == 0)
 		{
-			source.firePropertyChanged(property, null, null);
+			return;
 		}
+		
+		int[] indices = new int[size];
+		for (int i = 0; i < size; i++)
+		{
+			indices[i] = i;
+		}
+		
+		ModelElement[] oldValues = list.toArray(new ModelElement[list.size()]);
+		list.clear();
+		
+		if (container)
+		{
+			for (ModelElement element : oldValues)
+			{
+				element.setOwner(null);
+			}
+		}
+		
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.REMOVE_MANY,
+				oldValues,
+				null,
+				indices
+		);
+		source.firePropertyChanged(event);
 	}
 
 	@Override
@@ -186,23 +297,52 @@ public class ModelList<T extends ModelElement> implements List<T>
 	@Override
 	public T set(int index, T element)
 	{
-		T result = list.set(index, element);
-		source.firePropertyChanged(property, null, null);
-		return result;
+		throw new UnsupportedOperationException("]:>");
 	}
 
 	@Override
 	public void add(int index, T element)
 	{
+		if (container)
+		{
+			element.setOwner(source);
+		}
+		
 		list.add(index, element);
-		source.firePropertyChanged(property, null, null);
+		
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.ADD,
+				null,
+				element,
+				index
+		);
+		source.firePropertyChanged(event);
 	}
 
 	@Override
 	public T remove(int index)
 	{
-		T result = list.remove(index);
-		source.firePropertyChanged(property, null, null);
+		T result = list.get(index);
+		if (container)
+		{
+			result.setOwner(null);
+		}
+		
+		list.remove(index);
+		
+		PropertyChangeEvent event = new PropertyChangeEvent
+		(
+				source,
+				property,
+				EPropertyChangeEventType.REMOVE,
+				result,
+				null,
+				index
+		);
+		source.firePropertyChanged(event);
 		return result;
 	}
 

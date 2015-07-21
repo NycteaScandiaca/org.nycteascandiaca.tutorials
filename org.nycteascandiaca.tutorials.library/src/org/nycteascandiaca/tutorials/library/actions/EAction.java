@@ -11,4 +11,7 @@ public enum EAction
 	
 	UNDO,
 	REDO,
+	
+	ADD_AUTHOR,
+	ADD_BOOK
 }

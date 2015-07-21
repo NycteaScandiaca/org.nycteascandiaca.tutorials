@@ -20,6 +20,9 @@ public class ActionManager
 		
 		actions.put(EAction.UNDO, new UndoAction());
 		actions.put(EAction.REDO, new RedoAction());
+		
+		actions.put(EAction.ADD_AUTHOR, new AddAuthorAction());
+		actions.put(EAction.ADD_BOOK, new AddBookAction());
 	}
 	
 	public void initialize()

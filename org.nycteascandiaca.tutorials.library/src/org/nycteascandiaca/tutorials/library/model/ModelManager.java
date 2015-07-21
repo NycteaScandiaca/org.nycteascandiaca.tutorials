@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CommandStack;
-import org.nycteascandiaca.tutorials.library.ui.EView;
-import org.nycteascandiaca.tutorials.library.ui.IView;
 
 public class ModelManager
 {

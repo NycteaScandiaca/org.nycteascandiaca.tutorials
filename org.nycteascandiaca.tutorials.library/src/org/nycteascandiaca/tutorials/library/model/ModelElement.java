@@ -1,5 +1,10 @@
 package org.nycteascandiaca.tutorials.library.model;
 
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
+
 public abstract class ModelElement
 {
 	private String id;
@@ -18,7 +23,13 @@ public abstract class ModelElement
 	
 	public void setId(String id)
 	{
-		firePropertyChanged(EModelProperty.MODEL_ELEMENT__ID, this.id, this.id = id);
+		firePropertyChanged
+		(
+				EModelProperty.MODEL_ELEMENT__ID,
+				EPropertyChangeEventType.SET,
+				this.id,
+				this.id = id
+		);
 	}
 	
 	public ModelElement getOwner()
@@ -28,7 +39,13 @@ public abstract class ModelElement
 	
 	public void setOwner(ModelElement owner)
 	{
-		firePropertyChanged(EModelProperty.MODEL_ELEMENT__ID, this.owner, this.owner = owner);
+		firePropertyChanged
+		(
+				EModelProperty.MODEL_ELEMENT__OWNER,
+				EPropertyChangeEventType.SET,
+				this.owner,
+				this.owner = owner
+		);
 	}
 	
 	public Library getRoot()
@@ -106,9 +123,9 @@ public abstract class ModelElement
 		}
 	}
 	
-	protected void firePropertyChanged(EModelProperty property, Object oldValue, Object newValue)
+	protected void firePropertyChanged(EModelProperty property, EPropertyChangeEventType eventType, Object oldValue, Object newValue)
 	{
-		firePropertyChanged(new PropertyChangeEvent(this, property, oldValue, newValue));
+		firePropertyChanged(new PropertyChangeEvent(this, property, eventType, oldValue, newValue));
 	}
 	
 	protected void firePropertyChanged(PropertyChangeEvent event)

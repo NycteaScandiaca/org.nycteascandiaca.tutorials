@@ -1,10 +1,10 @@
-package org.nycteascandiaca.tutorials.library.model.commands;
+package org.nycteascandiaca.tutorials.library.model.edit.commands;
 
 import java.util.List;
 
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.ModelElement;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 
 public class AddCommand implements ICommand
 {

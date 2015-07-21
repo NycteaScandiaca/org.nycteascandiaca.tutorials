@@ -74,6 +74,16 @@ public class LibraryMenuBar extends JMenuBar
 		item.setText("Redo");
 		item.setIcon(resourceManager.getIcon(EIcon.REDO_16x16));
 		
+		editMenu.addSeparator();
+		
+		item = editMenu.add(actionManager.getAction(EAction.ADD_AUTHOR));
+		item.setText("Add Author");
+		item.setIcon(resourceManager.getIcon(EIcon.AUTHOR_16x16));
+		
+		item = editMenu.add(actionManager.getAction(EAction.ADD_BOOK));
+		item.setText("Add Book");
+		item.setIcon(resourceManager.getIcon(EIcon.BOOK_16x16));
+		
 		return editMenu;
 	}
 }

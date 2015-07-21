@@ -3,6 +3,9 @@ package org.nycteascandiaca.tutorials.library.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
+
 public class Book extends ModelElement
 {
 	private String title;
@@ -31,7 +34,13 @@ public class Book extends ModelElement
 	
 	public void setTitle(String title)
 	{
-		firePropertyChanged(EModelProperty.BOOK__TITLE, this.title, this.title = title);
+		firePropertyChanged
+		(
+				EModelProperty.BOOK__TITLE,
+				EPropertyChangeEventType.SET,
+				this.title,
+				this.title = title
+		);
 	}
 	
 	public String getDescription()
@@ -41,7 +50,13 @@ public class Book extends ModelElement
 	
 	public void setDescription(String description)
 	{
-		firePropertyChanged(EModelProperty.BOOK__DESCRIPTION, this.description, this.description = description);
+		firePropertyChanged
+		(
+				EModelProperty.BOOK__DESCRIPTION,
+				EPropertyChangeEventType.SET,
+				this.description,
+				this.description = description
+		);
 	}
 	
 	public LocalDate getPublicationDate()
@@ -51,7 +66,13 @@ public class Book extends ModelElement
 	
 	public void setPublicationDate(LocalDate publicationDate)
 	{
-		firePropertyChanged(EModelProperty.BOOK__PUBLICATION_DATE, this.publicationDate, this.publicationDate = publicationDate);
+		firePropertyChanged
+		(
+				EModelProperty.BOOK__PUBLICATION_DATE,
+				EPropertyChangeEventType.SET,
+				this.publicationDate,
+				this.publicationDate = publicationDate
+		);
 	}
 	
 	public EBookCategory getCategory()
@@ -61,7 +82,13 @@ public class Book extends ModelElement
 	
 	public void setCategory(EBookCategory category)
 	{
-		firePropertyChanged(EModelProperty.BOOK__CATEGORY, this.category, this.category = category);
+		firePropertyChanged
+		(
+				EModelProperty.BOOK__CATEGORY,
+				EPropertyChangeEventType.SET,
+				this.category,
+				this.category = category
+		);
 	}
 	
 	public int getPages()
@@ -71,7 +98,13 @@ public class Book extends ModelElement
 	
 	public void setPages(int pages)
 	{
-		firePropertyChanged(EModelProperty.BOOK__PAGES, this.pages, this.pages = pages);
+		firePropertyChanged
+		(
+				EModelProperty.BOOK__PAGES,
+				EPropertyChangeEventType.SET,
+				this.pages,
+				this.pages = pages
+		);
 	}
 	
 	public List<Author> getAuthors()

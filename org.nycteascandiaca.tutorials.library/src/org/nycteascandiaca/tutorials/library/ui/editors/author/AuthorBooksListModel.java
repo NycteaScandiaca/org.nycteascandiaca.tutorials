@@ -9,9 +9,9 @@ import javax.swing.event.ListDataListener;
 
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
-import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 
 class AuthorBooksListModel implements ListModel<Book>, IPropertyChangeListener
 {

@@ -2,6 +2,9 @@ package org.nycteascandiaca.tutorials.library.model;
 
 import java.util.List;
 
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.EPropertyChangeEventType;
+
 public class Author extends ModelElement
 {
 	private String firstName;
@@ -26,7 +29,13 @@ public class Author extends ModelElement
 	
 	public void setFirstName(String firstName)
 	{
-		firePropertyChanged(EModelProperty.AUTHOR__FIRST_NAME, this.firstName, this.firstName = firstName);
+		firePropertyChanged
+		(
+				EModelProperty.AUTHOR__FIRST_NAME,
+				EPropertyChangeEventType.SET,
+				this.firstName,
+				this.firstName = firstName
+		);
 	}
 	
 	public String getLastName()
@@ -36,7 +45,13 @@ public class Author extends ModelElement
 	
 	public void setLastName(String lastName)
 	{
-		firePropertyChanged(EModelProperty.AUTHOR__LAST_NAME, this.lastName, this.lastName = lastName);
+		firePropertyChanged
+		(
+				EModelProperty.AUTHOR__LAST_NAME,
+				EPropertyChangeEventType.SET,
+				this.lastName,
+				this.lastName = lastName
+		);
 	}
 	
 	public String getDescription()
@@ -46,7 +61,13 @@ public class Author extends ModelElement
 	
 	public void setDescription(String description)
 	{
-		firePropertyChanged(EModelProperty.AUTHOR__DESCRIPTION, this.description, this.description = description);
+		firePropertyChanged
+		(
+				EModelProperty.AUTHOR__DESCRIPTION,
+				EPropertyChangeEventType.SET,
+				this.description,
+				this.description = description
+		);
 	}
 	
 	public List<Book> getBooks()

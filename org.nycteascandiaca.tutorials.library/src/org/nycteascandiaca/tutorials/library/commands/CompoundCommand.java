@@ -25,12 +25,12 @@ public class CompoundCommand implements ICommand
 	@Override
 	public void undo()
 	{
-		commands.descendingIterator().forEachRemaining(command -> command.execute());
+		commands.descendingIterator().forEachRemaining(command -> command.undo());
 	}
 
 	@Override
 	public void redo()
 	{
-		commands.forEach(command -> command.execute());
+		commands.forEach(command -> command.redo());
 	}
 }

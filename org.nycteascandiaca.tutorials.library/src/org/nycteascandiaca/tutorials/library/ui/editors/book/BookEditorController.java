@@ -19,10 +19,10 @@ import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.EBookCategory;
-import org.nycteascandiaca.tutorials.library.model.EModelProperty;
-import org.nycteascandiaca.tutorials.library.model.IPropertyChangeListener;
-import org.nycteascandiaca.tutorials.library.model.PropertyChangeEvent;
-import org.nycteascandiaca.tutorials.library.model.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
+import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
+import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
+import org.nycteascandiaca.tutorials.library.model.edit.commands.SetCommand;
 import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class BookEditorController implements IEditorController<Book, BookEditor>, IPropertyChangeListener, FocusListener, ItemListener
@@ -84,7 +84,6 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		view.getCategoryComboBox().removeFocusListener(this);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent event)
 	{
@@ -123,11 +122,6 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 			case BOOK__DESCRIPTION:
 			{
 				setViewDescription((String)event.getNewValue());
-				break;
-			}
-			case BOOK__AUTHORS:
-			{
-				setViewAuthors((List<Author>)event.getNewValue());
 				break;
 			}
 			default:
