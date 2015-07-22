@@ -13,5 +13,7 @@ public enum EAction
 	REDO,
 	
 	ADD_AUTHOR,
-	ADD_BOOK
+	ADD_BOOK,
+	
+	DELETE
 }

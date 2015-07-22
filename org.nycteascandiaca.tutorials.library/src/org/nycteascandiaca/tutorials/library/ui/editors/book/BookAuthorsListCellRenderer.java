@@ -9,8 +9,10 @@ import javax.swing.ListCellRenderer;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.model.Author;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
+import org.nycteascandiaca.tutorials.library.ui.UIUtils;
 
 public class BookAuthorsListCellRenderer implements ListCellRenderer<Author>
 {
@@ -42,13 +44,16 @@ public class BookAuthorsListCellRenderer implements ListCellRenderer<Author>
 		
 		ResourceManager resourceManager = Application.INSTANCE.getResourceManager();
 		
+		String firstName = UIUtils.toString(value, EModelProperty.AUTHOR__FIRST_NAME);
+		String lastName = UIUtils.toString(value, EModelProperty.AUTHOR__LAST_NAME);
+		
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("<html>");
 		sb.append("<b>Name: </b>");
-		sb.append(value.getFirstName());
+		sb.append(firstName);
 		sb.append(" ");
-		sb.append(value.getLastName());
+		sb.append(lastName);
 		sb.append("<br>");
 		sb.append("<b>Books: </b>");
 		sb.append(value.getBooks().size());

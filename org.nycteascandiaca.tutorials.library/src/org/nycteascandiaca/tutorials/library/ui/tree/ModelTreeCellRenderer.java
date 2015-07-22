@@ -9,8 +9,10 @@ import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.model.Author;
 import org.nycteascandiaca.tutorials.library.model.Book;
 import org.nycteascandiaca.tutorials.library.model.Library;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
+import org.nycteascandiaca.tutorials.library.ui.UIUtils;
 
 @SuppressWarnings("serial")
 public class ModelTreeCellRenderer extends DefaultTreeCellRenderer
@@ -41,19 +43,23 @@ public class ModelTreeCellRenderer extends DefaultTreeCellRenderer
 		{
 			Library library = (Library)value;
 			this.setIcon(resourceManager.getIcon(EIcon.LIBRARY_16x16));
-			this.setText(library.getName());
+			String name = UIUtils.toString(library, EModelProperty.LIBRARY__NAME);
+			this.setText(name);
 		}
 		else if (value instanceof Author)
 		{
 			Author author = (Author)value;
 			this.setIcon(resourceManager.getIcon(EIcon.AUTHOR_16x16));
-			this.setText(author.getFirstName() + " " + author.getLastName());
+			String firstName = UIUtils.toString(author, EModelProperty.AUTHOR__FIRST_NAME);
+			String lastName = UIUtils.toString(author, EModelProperty.AUTHOR__LAST_NAME);
+			this.setText(firstName + " " + lastName);
 		}
 		else if (value instanceof Book)
 		{
 			Book book = (Book)value;
 			this.setIcon(resourceManager.getIcon(EIcon.BOOK_16x16));
-			this.setText(book.getTitle());
+			String title = UIUtils.toString(book, EModelProperty.BOOK__TITLE);
+			this.setText(title);
 		}
 		
 		return this;

@@ -9,8 +9,10 @@ import javax.swing.ListCellRenderer;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.model.Book;
+import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.resources.EIcon;
 import org.nycteascandiaca.tutorials.library.resources.ResourceManager;
+import org.nycteascandiaca.tutorials.library.ui.UIUtils;
 
 class AuthorBooksListCellRenderer implements ListCellRenderer<Book>
 {
@@ -42,17 +44,21 @@ class AuthorBooksListCellRenderer implements ListCellRenderer<Book>
 		
 		ResourceManager resourceManager = Application.INSTANCE.getResourceManager();
 		
+		String title = UIUtils.toString(value, EModelProperty.BOOK__TITLE);
+		String publicationDate = UIUtils.toString(value, EModelProperty.BOOK__PUBLICATION_DATE);
+		String pages = UIUtils.toString(value, EModelProperty.BOOK__PAGES);
+		
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("<html>");
 		sb.append("<b>Title: </b>");
-		sb.append(value.getTitle());
+		sb.append(title);
 		sb.append("<br>");
 		sb.append("<b>Date: </b>");
-		sb.append(value.getPublicationDate());
+		sb.append(publicationDate);
 		sb.append("<br>");
 		sb.append("<b>Pages: </b>");
-		sb.append(value.getPages());
+		sb.append(pages);
 		sb.append("</html>");
 		
 		result.setText(sb.toString());

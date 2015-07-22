@@ -15,6 +15,7 @@ import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.edit.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.ui.UIUtils;
 import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class AuthorEditorController implements IEditorController<Author, AuthorEditor>, IPropertyChangeListener, FocusListener
@@ -116,25 +117,25 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 	private void setViewId(String id)
 	{
 		JTextField idTextField = view.getIdTextField();
-		idTextField.setText(id);
+		idTextField.setText(UIUtils.toString(id));
 	}
 	
 	private void setViewFirstName(String firstName)
 	{
 		JTextField firstNameTextField = view.getFirstNameTextField();
-		firstNameTextField.setText(firstName);
+		firstNameTextField.setText(UIUtils.toString(firstName));
 	}
 	
 	private void setViewLastName(String lastName)
 	{
 		JTextField lastNameTextField = view.getLastNameTextField();
-		lastNameTextField.setText(lastName);
+		lastNameTextField.setText(UIUtils.toString(lastName));
 	}
 	
 	private void setViewDescription(String description)
 	{
 		JTextArea descriptionTextArea = view.getDescriptionTextArea();
-		descriptionTextArea.setText(String.valueOf(description));
+		descriptionTextArea.setText(UIUtils.toString(description));
 	}
 	
 	@Override
@@ -150,30 +151,33 @@ public class AuthorEditorController implements IEditorController<Author, AuthorE
 		if (e.getSource() == view.getFirstNameTextField())
 		{
 			JTextField firstNameTextField = view.getFirstNameTextField();
-			String firstName = firstNameTextField.getText();
-			if (!Objects.equals(model.getFirstName(), firstName))
+			String viewValue = firstNameTextField.getText();
+			String modelValue = UIUtils.toString(model, EModelProperty.AUTHOR__FIRST_NAME);
+			if (!Objects.equals(modelValue, viewValue))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__FIRST_NAME, firstName);
+				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__FIRST_NAME, viewValue);
 				commandStack.execute(command);
 			}
 		}
 		else if (e.getSource() == view.getLastNameTextField())
 		{
 			JTextField lastNameTextField = view.getLastNameTextField();
-			String lastName = lastNameTextField.getText();
-			if (!Objects.equals(model.getLastName(), lastName))
+			String viewValue = lastNameTextField.getText();
+			String modelValue = UIUtils.toString(model, EModelProperty.AUTHOR__LAST_NAME);
+			if (!Objects.equals(modelValue, viewValue))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__LAST_NAME, lastName);
+				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__LAST_NAME, viewValue);
 				commandStack.execute(command);
 			}
 		}
 		else if (e.getSource() == view.getDescriptionTextArea())
 		{
 			JTextArea descriptionTextArea = view.getDescriptionTextArea();
-			String description = descriptionTextArea.getText();
-			if (!Objects.equals(model.getDescription(), description))
+			String viewValue = descriptionTextArea.getText();
+			String modelValue = UIUtils.toString(model, EModelProperty.AUTHOR__DESCRIPTION);
+			if (!Objects.equals(modelValue, viewValue))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__DESCRIPTION, description);
+				ICommand command = new SetCommand(model, EModelProperty.AUTHOR__DESCRIPTION, viewValue);
 				commandStack.execute(command);
 			}
 		}

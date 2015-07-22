@@ -8,30 +8,33 @@ public class SetSelectionCommand implements ICommand
 {
 	private final ISelectionProvider provider;
 	
-	private final Selection selection;
+	private final Selection newSelection;
 	
-	public SetSelectionCommand(ISelectionProvider provider, Selection selection)
+	private Selection oldSelection;
+	
+	public SetSelectionCommand(ISelectionProvider provider, Selection newSelection)
 	{
 		this.provider = provider;
-		this.selection = selection;
+		this.newSelection = newSelection;
 	}
 
 	@Override
 	public void execute()
 	{
-		provider.setSelection(selection);
+		oldSelection = provider.getSelection();
+		provider.setSelection(newSelection);
 	}
 
 	@Override
 	public void undo()
 	{
-		// Do nothing
+		provider.setSelection(oldSelection);
 	}
 
 	@Override
 	public void redo()
 	{
-		provider.setSelection(selection);
+		provider.setSelection(newSelection);
 	}
 
 }

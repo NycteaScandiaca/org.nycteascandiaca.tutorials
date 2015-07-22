@@ -56,5 +56,4 @@ public class RemoveCommand implements ICommand
 		List list = (List<?>)container.getPropertyValue(property);
 		list.remove(index);
 	}
-
 }

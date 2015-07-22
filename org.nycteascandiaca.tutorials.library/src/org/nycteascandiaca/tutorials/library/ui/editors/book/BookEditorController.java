@@ -20,6 +20,7 @@ import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.IPropertyChangeListener;
 import org.nycteascandiaca.tutorials.library.model.edit.PropertyChangeEvent;
 import org.nycteascandiaca.tutorials.library.model.edit.commands.SetCommand;
+import org.nycteascandiaca.tutorials.library.ui.UIUtils;
 import org.nycteascandiaca.tutorials.library.ui.editors.IEditorController;
 
 public class BookEditorController implements IEditorController<Book, BookEditor>, IPropertyChangeListener, FocusListener, ItemListener
@@ -136,13 +137,13 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 	private void setViewId(String id)
 	{
 		JTextField idTextField = view.getIdTextField();
-		idTextField.setText(id);
+		idTextField.setText(UIUtils.toString(id));
 	}
 	
 	private void setViewTitle(String title)
 	{
 		JTextField titleTextField = view.getTitleTextField();
-		titleTextField.setText(title);
+		titleTextField.setText(UIUtils.toString(title));
 	}
 	
 	private void setViewCategory(EBookCategory category)
@@ -166,7 +167,7 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 	private void setViewDescription(String description)
 	{
 		JTextArea descriptionTextArea = view.getDescriptionTextArea();
-		descriptionTextArea.setText(String.valueOf(description));
+		descriptionTextArea.setText(UIUtils.toString(description));
 	}
 	
 	@Override
@@ -183,10 +184,11 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		if (e.getSource() == view.getTitleTextField())
 		{
 			JTextField titleTextField = view.getTitleTextField();
-			String title = titleTextField.getText();
-			if (!Objects.equals(model.getTitle(), title))
+			String viewValue = titleTextField.getText();
+			String modelValue = UIUtils.toString(model, EModelProperty.BOOK__TITLE);
+			if (!Objects.equals(modelValue, viewValue))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.BOOK__TITLE, title);
+				ICommand command = new SetCommand(model, EModelProperty.BOOK__TITLE, viewValue);
 				commandStack.execute(command);
 			}
 		}
@@ -203,10 +205,11 @@ public class BookEditorController implements IEditorController<Book, BookEditor>
 		else if (e.getSource() == view.getDescriptionTextArea())
 		{
 			JTextArea descriptionTextArea = view.getDescriptionTextArea();
-			String description = descriptionTextArea.getText();
-			if (!Objects.equals(model.getDescription(), description))
+			String viewValue = descriptionTextArea.getText();
+			String modelValue = UIUtils.toString(model, EModelProperty.BOOK__DESCRIPTION);
+			if (!Objects.equals(modelValue, viewValue))
 			{
-				ICommand command = new SetCommand(model, EModelProperty.BOOK__DESCRIPTION, description);
+				ICommand command = new SetCommand(model, EModelProperty.BOOK__DESCRIPTION, viewValue);
 				commandStack.execute(command);
 			}
 		}

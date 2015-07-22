@@ -23,6 +23,8 @@ public class ActionManager
 		
 		actions.put(EAction.ADD_AUTHOR, new AddAuthorAction());
 		actions.put(EAction.ADD_BOOK, new AddBookAction());
+		
+		actions.put(EAction.DELETE, new DeleteAction());
 	}
 	
 	public void initialize()

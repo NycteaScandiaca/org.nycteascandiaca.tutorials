@@ -49,8 +49,8 @@ public final class Application
 	
 	public void run()
 	{		
+		uiManager.initialize();
 		actionManager.initialize();
-		uiManager.initialize();	
 		
 		uiManager.getWindow().setVisible(true);
 	}

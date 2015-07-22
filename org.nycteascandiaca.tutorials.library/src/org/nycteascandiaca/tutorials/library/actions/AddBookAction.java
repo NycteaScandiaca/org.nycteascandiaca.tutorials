@@ -1,26 +1,29 @@
 package org.nycteascandiaca.tutorials.library.actions;
 
 import java.awt.event.ActionEvent;
-import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.nycteascandiaca.tutorials.library.Application;
 import org.nycteascandiaca.tutorials.library.commands.CompoundCommand;
 import org.nycteascandiaca.tutorials.library.commands.ICommand;
 import org.nycteascandiaca.tutorials.library.model.Book;
-import org.nycteascandiaca.tutorials.library.model.IModelManagerListener;
-import org.nycteascandiaca.tutorials.library.model.Library;
+import org.nycteascandiaca.tutorials.library.model.EBookCategory;
 import org.nycteascandiaca.tutorials.library.model.ModelFactory;
 import org.nycteascandiaca.tutorials.library.model.ModelManager;
 import org.nycteascandiaca.tutorials.library.model.edit.EModelProperty;
 import org.nycteascandiaca.tutorials.library.model.edit.commands.AddCommand;
 import org.nycteascandiaca.tutorials.library.ui.EView;
+import org.nycteascandiaca.tutorials.library.ui.ISelectionChangedListener;
 import org.nycteascandiaca.tutorials.library.ui.ISelectionProvider;
 import org.nycteascandiaca.tutorials.library.ui.Selection;
+import org.nycteascandiaca.tutorials.library.ui.SelectionChangeEvent;
 import org.nycteascandiaca.tutorials.library.ui.UIManager;
 import org.nycteascandiaca.tutorials.library.ui.commands.SetSelectionCommand;
+import org.nycteascandiaca.tutorials.library.ui.tree.ModelTreeModel;
 
 @SuppressWarnings("serial")
-public class AddBookAction extends AbstractAction implements IModelManagerListener
+public class AddBookAction extends AbstractAction implements ISelectionChangedListener
 {
 	AddBookAction()
 	{
@@ -30,13 +33,15 @@ public class AddBookAction extends AbstractAction implements IModelManagerListen
 	@Override
 	public void initialize()
 	{
-		Application.INSTANCE.getModelManager().addModelManagerListener(this);
+		ISelectionProvider selectionProvider = (ISelectionProvider)Application.INSTANCE.getUIManager().getView(EView.MODEL_TREE);
+		selectionProvider.addSelectionChangedListener(this);
 	}
 	
 	@Override
 	public void dispose()
 	{
-		Application.INSTANCE.getModelManager().removeModelManagerListener(this);
+		ISelectionProvider selectionProvider = (ISelectionProvider)Application.INSTANCE.getUIManager().getView(EView.MODEL_TREE);
+		selectionProvider.removeSelectionChangedListener(this);
 	}
 	
 	@Override
@@ -48,6 +53,8 @@ public class AddBookAction extends AbstractAction implements IModelManagerListen
 		
 		Book book = modelFactory.createBook();
 		book.setTitle("New Book");
+		book.setCategory(EBookCategory.SCENCE);
+		book.setPublicationDate(LocalDate.now());
 		
 		CompoundCommand commands = new CompoundCommand();
 		ICommand command = new AddCommand
@@ -66,20 +73,19 @@ public class AddBookAction extends AbstractAction implements IModelManagerListen
 	}
 
 	@Override
-	public void modelOpened(Library library, Path path)
+	public void selectionChanged(SelectionChangeEvent event)
 	{
-		setEnabled(true);
-	}
-
-	@Override
-	public void modelSaved(Library library, Path path)
-	{
-		
-	}
-
-	@Override
-	public void modelClosed(Library library)
-	{
+		Selection selection = event.getSelection();
+		List<Object> elements = selection.getElements();
+		if (elements.size() == 1)
+		{
+			Object first = elements.get(0);
+			if (first == ModelTreeModel.FakeNode.BOOKS)
+			{
+				setEnabled(true);
+				return;
+			}
+		}
 		setEnabled(false);
 	}
 }

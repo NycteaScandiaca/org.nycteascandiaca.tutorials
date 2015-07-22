@@ -84,6 +84,12 @@ public class LibraryMenuBar extends JMenuBar
 		item.setText("Add Book");
 		item.setIcon(resourceManager.getIcon(EIcon.BOOK_16x16));
 		
+		editMenu.addSeparator();
+		
+		item = editMenu.add(actionManager.getAction(EAction.DELETE));
+		item.setText("Delete");
+		item.setIcon(resourceManager.getIcon(EIcon.DELETE_16x16));
+		
 		return editMenu;
 	}
 }
